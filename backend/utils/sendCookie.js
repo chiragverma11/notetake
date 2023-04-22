@@ -3,6 +3,7 @@ const sendCookie = (user = {}, statusCode, res) => {
 
   const options = {
     maxAge: process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
+    // sameSite: "Lax",
     httpOnly: true,
   };
   res

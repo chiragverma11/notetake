@@ -1,0 +1,48 @@
+@use "./colors.scss" as *;
+
+.signup {
+  padding: 2rem 0;
+  width: 100%;
+
+  &_title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-align: center;
+    padding-bottom: 1.5rem;
+  }
+
+  &_form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    width: 75%;
+    margin: auto;
+    @media (min-width: 768px) {
+      width: 40%;
+    }
+
+    &_input {
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.4rem;
+      background-color: $slate-200;
+      color: black;
+      font-weight: 600;
+      &::placeholder {
+        color: $slate-600;
+      }
+    }
+  }
+
+  .signupBtn {
+    background-color: $primary;
+    color: #fff;
+    padding: 0.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-radius: 0.4rem;
+    transition: 0.2s;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}

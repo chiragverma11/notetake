@@ -1,0 +1,52 @@
+@use "./colors.scss" as *;
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  position: sticky;
+  z-index: 100;
+  padding: 0.5rem 1.5rem;
+  // padding: 0.8rem 1.5rem;
+  align-items: center;
+  // background-color: black;
+  color: white;
+  box-shadow: 0 1px 10px $primary;
+  font-family: "Work Sans", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+
+  .logo {
+    color: $primary;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: all 0.15s;
+    &:hover {
+      color: $primary-hover;
+    }
+  }
+  .navLink {
+    display: flex;
+    padding: 0 0.5rem;
+    gap: 0.8rem;
+    visibility: hidden;
+    position: absolute;
+    @media (min-width: 768px) {
+      visibility: visible;
+      position: static;
+    }
+  }
+  .auth__btn {
+    // background-color: hsl(217, 91%, 60%);
+    // padding: 0.3rem 0.5rem;
+    // border-radius: 6px;
+    color: $primary;
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: 0.15s;
+    &:hover {
+      color: $primary-hover;
+      transform: scale(1.05);
+    }
+    // &:active {
+    //   color: $primary-active;
+    // }
+  }
+}

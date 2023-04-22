@@ -10,7 +10,16 @@ const app = express();
 dotenv.config({ path: "backend/config/.env" });
 
 //Cors
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: [
+      "http://localhost:5173",
+      "http://127.0.0.1:5173",
+      "http://192.168.1.6:5173",
+    ],
+  })
+);
 
 //Cookie Parser for Accessing cookies
 app.use(cookieParser());

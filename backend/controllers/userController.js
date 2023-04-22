@@ -60,7 +60,7 @@ const loginUser = catchAsyncError(async (req, res, next) => {
   if (!isMatch) {
     return next(new ErrorHandler("Incorrect Password", 401));
   }
-  sendCookie(user, 201, res);
+  sendCookie(user, 200, res);
 });
 
 export { signupUser, loginUser };
