@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import "../../../styles/hamburger.scss";
 
+// This just creates HamBurger Icon for Menu Option
 const HamBurger = ({ handleHam }) => {
   return (
     <div className="hamburger" onClick={handleHam}>

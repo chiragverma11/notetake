@@ -63,4 +63,15 @@ const loginUser = catchAsyncError(async (req, res, next) => {
   sendCookie(user, 200, res);
 });
 
-export { signupUser, loginUser };
+const logoutUser = catchAsyncError(async (req, res, next) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+  });
+  res.status(200).json({
+    success: true,
+    message: "Logged Out",
+  });
+});
+
+export { signupUser, loginUser, logoutUser };

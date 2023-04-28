@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import Navbar from "../Navbar/Navbar";
-import "../../styles/login.scss";
+import { UserContext } from "../Context/UserContext";
+import "../styles/login.scss";
 
 //this function is just used for developement because if I use this website over my local wifi server then the backend cannot respond and set cookie because of same site problem
 let baseUrl = "http://localhost:8080/api";
@@ -33,7 +33,7 @@ async function loginUser(formData) {
     if (!error.response.data.success) {
       toast.error(error.response.data.message, {
         position: "top-right",
-        autoClose: 4000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -53,27 +53,30 @@ const Login = ({ pageTitle }) => {
     detectDeviceType();
   }, []);
 
+  //Using Usercontext
+  const user = useContext(UserContext);
+
   const navigate = useNavigate();
 
   //Use States for Input Form
-  const [user, setUser] = useState({
+  const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
 
   //HandleChange for changing input value
   function handleDataChange(e) {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    setUserData({ ...userData, [e.target.name]: e.target.value });
   }
 
   //onlogin
   async function handlelogin(e) {
     e.preventDefault();
 
-    // if (user.password < 3) {
+    // if (userData.password < 3) {
     //   toast.warn("Password length must be atleast 3 characters!", {
     //     position: "top-right",
-    //     autoClose: 4000,
+    //     autoClose: 1000,
     //     hideProgressBar: false,
     //     closeOnClick: true,
     //     pauseOnHover: true,
@@ -84,16 +87,16 @@ const Login = ({ pageTitle }) => {
     // }
 
     const formData = {
-      email: user.email,
-      password: user.password,
+      email: userData.email,
+      password: userData.password,
     };
 
     const response = await loginUser(formData);
     //If response is success or there is no error
-    if (response && response.success) {
+    if (response?.success) {
       toast.success("Login Successfully", {
         position: "top-right",
-        autoClose: 4000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -101,20 +104,21 @@ const Login = ({ pageTitle }) => {
         progress: undefined,
         theme: "dark",
       });
-      setUser({ email: "", password: "" });
+      setUserData({ email: "", password: "" });
+      user.setIsAuthenticated(true);
+      user.setUserDetails(response.user);
       setTimeout(() => {
         navigate("/");
-      }, 2000);
+      }, 0);
     }
   }
 
   return (
     <>
-      <Navbar />
       <div className="login">
         <ToastContainer
           position="top-right"
-          autoClose={4000}
+          autoClose={1000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
@@ -131,7 +135,7 @@ const Login = ({ pageTitle }) => {
             name="email"
             id="email"
             placeholder="Email"
-            value={user.email}
+            value={userData.email}
             onChange={handleDataChange}
             className="login_form_input"
           />
@@ -140,7 +144,7 @@ const Login = ({ pageTitle }) => {
             name="password"
             id="password"
             placeholder="Password"
-            value={user.password}
+            value={userData.password}
             onChange={handleDataChange}
             className="login_form_input"
           />

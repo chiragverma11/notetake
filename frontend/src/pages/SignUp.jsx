@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import Navbar from "../Navbar/Navbar";
-import "../../styles/signup.scss";
+import "../styles/signup.scss";
 
 //this function is just used for developement because if I use this website over my local wifi server then the backend cannot respond and set cookie because of same site problem
 let baseUrl = "http://localhost:8080/api";
@@ -33,7 +32,7 @@ async function signupUser(formData) {
     if (!error.response.data.success) {
       toast.error(error.response.data.message, {
         position: "top-right",
-        autoClose: 4000,
+        autoClose: 2500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -74,7 +73,7 @@ const SignUp = ({ pageTitle }) => {
     if (user.password < 3) {
       toast.warn("Password length must be atleast 3 characters!", {
         position: "top-right",
-        autoClose: 4000,
+        autoClose: 2500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -95,7 +94,7 @@ const SignUp = ({ pageTitle }) => {
     if (response && response.success) {
       toast.success("Sign Up Successfully", {
         position: "top-right",
-        autoClose: 4000,
+        autoClose: 2500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -112,11 +111,10 @@ const SignUp = ({ pageTitle }) => {
 
   return (
     <>
-      <Navbar />
       <div className="signup">
         <ToastContainer
           position="top-right"
-          autoClose={4000}
+          autoClose={2500}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick

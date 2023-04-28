@@ -1,5 +1,9 @@
 import express from "express";
-import { signupUser, loginUser } from "../controllers/userController.js";
+import {
+  signupUser,
+  loginUser,
+  logoutUser,
+} from "../controllers/userController.js";
 
 const router = express.Router();
 
@@ -13,9 +17,12 @@ router.get("/", (req, res) => {
 });
 
 //Signup Route
-router.post("/signup", signupUser);
+router.route("/signup").post(signupUser);
 
 //Login Route
-router.post("/login", loginUser);
+router.route("/login").post(loginUser);
+
+//Logout Route
+router.route("/logout").post(logoutUser);
 
 export default router;
