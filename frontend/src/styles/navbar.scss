@@ -109,3 +109,12 @@ nav {
     transform: translateX(0);
   }
 }
+
+.toast {
+  @media (max-width: 600px) {
+    width: 250px;
+    border-radius: 0.5rem;
+    position: absolute;
+    // top: 30px;
+  }
+}

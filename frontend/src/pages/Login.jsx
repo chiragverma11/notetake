@@ -127,6 +127,7 @@ const Login = ({ pageTitle }) => {
           draggable
           pauseOnHover
           theme="dark"
+          className="toast"
         />
         <h2 className="login_title">Login</h2>
         <form onSubmit={handlelogin} className="login_form">

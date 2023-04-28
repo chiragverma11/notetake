@@ -14,18 +14,24 @@ main {
   .newNote_wrapper {
     display: flex;
     justify-content: center;
-    padding: 0 2rem;
+    padding: 0 1.5rem;
+    @media (min-width: 600px) {
+      padding: 0 2rem;
+    }
 
     .newNote_container {
-      // margin: auto;
       display: flex;
       flex-direction: column;
       justify-content: center;
       gap: 0.5rem;
       border-radius: 0.5rem;
-      width: clamp(250px, 600px, 650px);
+      width: clamp(250px, 100%, 100%);
+
       font-weight: 500;
       box-shadow: 0 1px 8px rgba($color: #000000, $alpha: 0.4);
+      @media (min-width: 600px) {
+        width: clamp(250px, 600px, 650px);
+      }
 
       .newNote_textArea {
         resize: none;
@@ -58,7 +64,8 @@ main {
           align-items: center;
           font-size: 1.3rem;
           color: $slate-600;
-          flex: 0 1 10%;
+          // flex: 0 1 10%;
+          width: 30%;
 
           .newNote_tag {
             font-size: 0.9rem;
@@ -66,23 +73,27 @@ main {
             border-radius: 0;
             border-bottom: 2px solid $slate-600;
             // width: 150px;
-            flex: 0 1 50%;
+            flex: 0 1 70%;
           }
         }
 
         .newNote_control {
           display: flex;
           justify-content: center;
-          padding: 0.25rem 1rem;
+          padding: 0.25rem 0rem;
 
           .newNote_btn {
             color: $slate-700;
-            padding: 0.4rem 1.5rem;
+            padding: 0.4rem 1rem;
             border-radius: 0.25rem;
             transition: 0.1s ease-in-out;
-
-            &:hover {
-              background-color: $slate-200;
+            @media (min-width: 600px) {
+              padding: 0.4rem 1.5rem;
+            }
+            @media (min-width: 600px) {
+              &:hover {
+                background-color: $slate-200;
+              }
             }
 
             &:active {
@@ -97,8 +108,8 @@ main {
 
 .notes_wrapper {
   font-family: "Work Sans", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
-  padding: 3rem 1rem;
-  width: 80%;
+  padding: 3rem 0rem;
+  width: 85%;
   margin-inline: auto;
 
   .alt_notes {
@@ -107,14 +118,16 @@ main {
     color: $slate-400;
   }
 
+  .masonry_layout {
+    margin-inline: auto;
+  }
+
   .note_card {
     border: 1px solid $slate-300;
     border-radius: 0.5rem;
     padding-block: 0.75rem 2rem;
     padding-inline: 1rem;
     position: relative;
-    // width: 15rem;
-    // height: minmax(70px, fit-content);
     transition: box-shadow 0.2s ease-in-out;
     cursor: pointer;
 
@@ -172,20 +185,24 @@ main {
 
 .noteModal {
   background-color: rgba($color: #000000, $alpha: 0.5);
-  position: absolute;
+  position: fixed;
   inset: 0 0 0 0;
   z-index: 100;
   transition: all 0.2s ease-in-out;
 
   .note_container {
-    position: absolute;
+    position: fixed;
     background-color: white;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 0.5rem;
-    width: 600px;
-    height: 400px;
+    width: 90%;
+    height: 80%;
+    @media (min-width: 600px) {
+      width: 600px;
+      height: 400px;
+    }
 
     .note_textArea {
       resize: none;
@@ -204,11 +221,15 @@ main {
       height: 90%;
 
       .note_title {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         font-weight: 500;
-        padding: 0.25rem 1rem;
+        padding: 0.5rem 1rem;
         border-radius: 0.5rem 0.5rem 0 0;
         border-bottom: 2px solid $slate-300;
+        @media (min-width: 600px) {
+          font-size: 1.4rem;
+          padding: 0.25rem 1rem;
+        }
       }
       .note_description {
         font-size: 1rem;
@@ -243,34 +264,55 @@ main {
       border-top: 2px solid $slate-300;
       box-shadow: 0 -2px 4px $slate-300;
       width: 100%;
+      height: 10%;
+      @media (min-width: 600px) {
+        height: auto;
+      }
 
       .tag_wrapper {
         display: flex;
         align-items: center;
         font-size: 1.3rem;
         color: $slate-600;
-        flex: 0 1 10%;
+        // flex: 0 1 10%;
+        width: 25%;
+        @media (min-width: 600px) {
+          width: 20%;
+        }
 
         .note_tag {
           font-size: 0.9rem;
           padding: 0rem 0.25rem;
           border-radius: 0;
           border-bottom: 2px solid $slate-600;
-          flex: 0 1 50%;
+          flex: 0 1 100%;
+          @media (min-width: 600px) {
+            flex: 0 1 100%;
+          }
         }
+      }
+      .dateTime {
+        font-size: 0.9rem;
+        transition: all 0.2s ease-in-out;
       }
 
       .note_control {
         display: flex;
         justify-content: center;
-        padding: 0.25rem 1rem;
+        padding: 0.25rem 0.25rem;
+        @media (min-width: 600px) {
+          padding: 0.25rem 1rem;
+        }
 
         .note_btn {
           color: $slate-700;
           font-weight: 500;
-          padding: 0.4rem 1.5rem;
+          padding: 0.4rem 0.25rem;
           border-radius: 0.25rem;
           transition: 0.1s ease-in-out;
+          @media (min-width: 600px) {
+            padding: 0.4rem 1.5rem;
+          }
 
           &:hover {
             background-color: $slate-200;

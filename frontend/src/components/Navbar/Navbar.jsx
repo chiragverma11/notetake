@@ -114,6 +114,7 @@ const Navbar = () => {
         draggable
         pauseOnHover
         theme="dark"
+        className="toast"
       />
     </>
   );

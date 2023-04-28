@@ -1,11 +1,11 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/home.scss";
-import { UserContext } from "../Context/UserContext";
+// import { UserContext } from "../Context/UserContext";
 import axios from "axios";
 import { TextareaAutosize } from "@mui/base";
 import { Masonry } from "@mui/lab";
-
 import { FaTrash } from "react-icons/fa";
+import NoteModal from "../components/NoteModal";
 
 //this function is just used for developement because if I use this website over my local wifi server then the backend cannot respond and set cookie because of same site problem
 let baseUrl = "http://localhost:8080/api";
@@ -19,7 +19,7 @@ const detectDeviceType = () => {
 };
 
 const Home = ({ pageTitle }) => {
-  const user = useContext(UserContext);
+  // const user = useContext(UserContext);
 
   const [newNote, setNewNote] = useState({
     title: "",
@@ -125,64 +125,6 @@ const Home = ({ pageTitle }) => {
     setNote(() => notes[notes.length - 1 - index]);
   }
 
-  const ViewNote = ({ note, setNote }) => {
-    return (
-      <>
-        <div className="noteModal">
-          <div className="note_container">
-            <div className="note_details">
-              <TextareaAutosize
-                className="note_textArea note_title"
-                placeholder="Title"
-                value={note.title}
-                name="title"
-                onChange={(e) =>
-                  setNote({ ...note, [e.target.name]: e.target.value })
-                }
-              ></TextareaAutosize>
-              <textarea
-                className="note_textArea note_description"
-                placeholder="Take a note..."
-                value={note.description}
-                name="description"
-                onChange={(e) =>
-                  setNote({ ...note, [e.target.name]: e.target.value })
-                }
-              ></textarea>
-            </div>
-            <div className="note_info">
-              <label htmlFor="note_tag" className="tag_wrapper">
-                #
-                <TextareaAutosize
-                  className="note_textArea note_tag"
-                  // placeholder="#"
-                  id="note_tag"
-                  spellCheck="false"
-                  value={note.tag}
-                  name="tag"
-                  onChange={(e) =>
-                    setNote({ ...note, [e.target.name]: e.target.value })
-                  }
-                ></TextareaAutosize>
-              </label>
-              <div className="note_control">
-                <button
-                  className="note_btn close_btn"
-                  onClick={() => {
-                    setShowNote(false);
-                    updateNote();
-                  }}
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  };
-
   return (
     <>
       <main>
@@ -259,7 +201,11 @@ const Home = ({ pageTitle }) => {
             <p className="alt_notes">Notes you add appear here</p>
           ) : (
             <>
-              <Masonry columns={{ xs: 2, sm: 3, md: 4, lg: 4 }} spacing={2}>
+              <Masonry
+                columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+                spacing={2}
+                className="masonry_layout"
+              >
                 {notes
                   .slice()
                   .reverse()
@@ -299,7 +245,14 @@ const Home = ({ pageTitle }) => {
           )}
         </div>
       </main>
-      {showNote && ViewNote({ note, setNote })}
+      {showNote && (
+        <NoteModal
+          note={note}
+          setNote={setNote}
+          setShowNote={setShowNote}
+          updateNote={updateNote}
+        />
+      )}
     </>
   );
 };
