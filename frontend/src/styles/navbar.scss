@@ -1,27 +1,88 @@
 @use "./colors.scss" as *;
 
+body[data-theme="light"] {
+  --primary-background: #{$background-light};
+  --primary-heading: #{$heading-dark};
+  --primary: #{$primary-light};
+  --primary-accent: #{$primary-light};
+  --primary-hover: #{$primary-hover-light};
+  --primary-active: #{$primary-active-light};
+  --input-bg: #{$input-bg-light};
+  --text-input: #{$text-dark};
+  --placeholder: #{$placeholder-light};
+  --secondary: #{$heading-dark};
+  --btn-hover: #{$btn-hover-light};
+}
+body[data-theme="dark"] {
+  --primary-background: #{$background-dark};
+  --primary-heading: #{$heading-light};
+  --primary: #{$heading-light};
+  --primary-accent: #{$secondary-dark};
+  --primary-hover: #{$primary-hover-dark};
+  --primary-active: #{$primary-active-dark};
+  --input-bg: #{$input-bg-dark};
+  --text-input: #{$text-light};
+  --placeholder: #{$placeholder-dark};
+  --secondary: #{$secondary-dark};
+  --btn-hover: #{$btn-hover-dark};
+}
+
+body {
+  background-color: var(--primary-background);
+  // transition: background-color 0.15s ease-in-out;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  // background-color: var(--primary);
+  z-index: 100;
+}
+
 nav {
   display: flex;
   justify-content: space-between;
   position: sticky;
-  z-index: 100;
+  top: 0;
+
   padding: 0.5rem 1.5rem;
-  // padding: 0.8rem 1.5rem;
   align-items: center;
-  // background-color: black;
-  // color: white;
-  box-shadow: 0 1px 10px $primary;
+  background-color: var(--primary-background);
+  box-shadow: 0 1px 10px var(--primary-accent);
   font-family: "Work Sans", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
 
   .logo {
-    color: $primary;
+    color: var(--primary);
     font-size: 1.5rem;
     font-weight: bold;
-    transition: all 0.15s;
-    &:hover {
-      color: $primary-hover;
+    transition: color 0.1s ease-in;
+
+    @media (min-width: 600px) {
+      &:hover {
+        color: var(--primary-hover);
+      }
+    }
+    &:active {
+      color: var(--primary-active);
     }
   }
+
+  .theme_btn {
+    margin-left: auto;
+    font-size: 1.9rem;
+    padding: 0 1rem;
+    color: var(--primary-heading);
+    border-radius: 1.5rem;
+
+    @media (min-width: 768px) {
+      padding: 0.5rem 0.5rem;
+      font-size: 1.5rem;
+      &:hover {
+        background-color: var(--btn-hover);
+      }
+    }
+  }
+
   .navLink {
     display: flex;
     align-items: center;
@@ -34,6 +95,7 @@ nav {
       position: static;
     }
     .userName {
+      color: var(--primary-heading);
       font-size: 1.1rem;
       font-weight: 500;
     }
@@ -41,19 +103,18 @@ nav {
 
   //Navlink Btns Css
   .navlink_btn {
-    color: $primary;
+    color: var(--primary);
     font-size: 1.1rem;
     font-weight: 600;
     transition: 0.15s;
     cursor: pointer;
     &:hover {
-      // color: $primary-hover;
       transform: scale(1.05);
     }
     &.active {
-      color: black;
+      color: var(--secondary);
       font-weight: 700;
-      border-bottom: 2px solid black;
+      border-bottom: 2px solid var(--secondary);
     }
   }
 
@@ -61,16 +122,34 @@ nav {
   .hamburger {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.422rem;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+
     @media (min-width: 768px) {
       visibility: hidden;
+      position: absolute;
     }
-    &_line {
-      background-color: $primary;
+    span {
+      background-color: var(--primary);
       width: 1.95rem;
-      height: 0.2rem;
+      height: 0.25rem;
       border-radius: 0.5rem;
+      transition: 0.2s ease-in-out, background-color 1ms;
+    }
+  }
+  .open {
+    span:nth-child(1) {
+      transform-origin: top left;
+      transform: rotate(45deg);
+    }
+    span:nth-child(2) {
+      // transform: translate(2px);
+      opacity: 0;
+    }
+    span:nth-child(3) {
+      transform-origin: bottom left;
+      transform: rotate(-45deg);
     }
   }
 }
@@ -86,23 +165,23 @@ nav {
   align-items: center;
   overflow-x: hidden;
   padding: 2rem 3rem;
-  background-color: hsla(0, 0%, 100%, 1);
-  // color: $primary;
+  background-color: var(--primary-background);
   font-size: 1.5rem;
   font-weight: 700;
   transform: translateX(-100%);
-  transition: 0.3s ease-in-out;
+  transition: 0.2s ease-in-out;
+  z-index: 1;
+  border-top: 2px solid var(--secondary);
 
   .menu_btn {
-    color: $primary;
+    color: var(--primary);
     transition: 0.15s;
     // &:hover {
     //   // color: $primary-hover;
     //   transform: scale(1.05);
     // }
     &.active {
-      color: black;
-      border-bottom: 2px solid black;
+      color: var(--secondary);
     }
   }
   &.show_menu {

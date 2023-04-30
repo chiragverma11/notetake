@@ -8,7 +8,11 @@ const LinkButton = (props) => {
         {props.name}
       </Link> */}
 
-      <NavLink to={props.to} className={props.className}>
+      <NavLink
+        to={props.to}
+        className={props.className}
+        onClick={props.handleHam}
+      >
         {props.name}
       </NavLink>
     </>

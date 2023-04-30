@@ -6,22 +6,11 @@ import axios from "axios";
 import { UserContext } from "../Context/UserContext";
 import "../styles/login.scss";
 
-//this function is just used for developement because if I use this website over my local wifi server then the backend cannot respond and set cookie because of same site problem
-let baseUrl = "http://localhost:8080/api";
-const detectDeviceType = () => {
-  baseUrl =
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    )
-      ? "http://192.168.1.6:8080/api"
-      : "http://localhost:8080/api";
-};
-
 async function loginUser(formData) {
   try {
     const response = await axios({
       method: "post",
-      url: `${baseUrl}/login`,
+      url: `/api/login`,
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
@@ -50,7 +39,6 @@ const Login = ({ pageTitle }) => {
   //Changing Page Title as the page Loads
   useEffect(() => {
     document.title = pageTitle;
-    detectDeviceType();
   }, []);
 
   //Using Usercontext
@@ -73,19 +61,6 @@ const Login = ({ pageTitle }) => {
   async function handlelogin(e) {
     e.preventDefault();
 
-    // if (userData.password < 3) {
-    //   toast.warn("Password length must be atleast 3 characters!", {
-    //     position: "top-right",
-    //     autoClose: 1000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "dark",
-    //   });
-    // }
-
     const formData = {
       email: userData.email,
       password: userData.password,
@@ -94,16 +69,16 @@ const Login = ({ pageTitle }) => {
     const response = await loginUser(formData);
     //If response is success or there is no error
     if (response?.success) {
-      toast.success("Login Successfully", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
+      // toast.success("Login Successfully", {
+      //   position: "top-right",
+      //   autoClose: 1000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "dark",
+      // });
       setUserData({ email: "", password: "" });
       user.setIsAuthenticated(true);
       user.setUserDetails(response.user);

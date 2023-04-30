@@ -1,14 +1,43 @@
 @use "./colors.scss" as *;
 
+body[data-theme="light"] {
+  --primary-background: #{$background-light};
+  --primary-heading: #{$heading-dark};
+  --primary-btn: #{$primary-light};
+  --primary-hover: #{$primary-hover-light};
+  --primary-active: #{$primary-active-light};
+  --input-bg: #{$input-bg-light};
+  --text: #{$text-dark};
+  --placeholder: #{$placeholder-light};
+}
+body[data-theme="dark"] {
+  --primary-background: #{$background-dark};
+  --primary-heading: #{$heading-light};
+  --primary-btn: #{$primary-dark};
+  --primary-hover: #{$primary-hover-dark};
+  --primary-active: #{$primary-active-dark};
+  --input-bg: #{$input-bg-dark};
+  --text: #{$text-light};
+  --placeholder: #{$placeholder-dark};
+}
+
 .signup {
   padding: 2rem 0;
   width: 100%;
+
+  .toast {
+    @media (max-width: 600px) {
+      width: 250px;
+    }
+  }
 
   &_title {
     font-size: 1.6rem;
     font-weight: 700;
     text-align: center;
     padding-bottom: 1.5rem;
+    color: var(--primary-heading);
+    // transition: color 0.15s ease-in-out;
   }
 
   &_form {
@@ -24,25 +53,30 @@
     &_input {
       padding: 0.5rem 0.75rem;
       border-radius: 0.4rem;
-      background-color: $slate-200;
-      color: black;
+      background-color: var(--input-bg);
+      color: var(--text);
       font-weight: 600;
       &::placeholder {
-        color: $slate-600;
+        color: var(--placeholder);
       }
     }
   }
 
   .signupBtn {
-    background-color: $primary;
+    background-color: var(--primary-btn);
     color: #fff;
     padding: 0.5rem;
     font-weight: 600;
     font-size: 1.1rem;
     border-radius: 0.4rem;
-    transition: 0.2s;
-    &:hover {
-      opacity: 0.8;
+    transition: 0.15s ease-in;
+    @media (min-width: 600px) {
+      &:hover {
+        background-color: var(--primary-hover);
+      }
+    }
+    &:active {
+      background-color: var(--primary-active);
     }
   }
 }

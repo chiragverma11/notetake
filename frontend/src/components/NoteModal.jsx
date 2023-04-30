@@ -70,7 +70,8 @@ const NoteModal = ({ note, setNote, setShowNote, updateNote }) => {
           <div className="note_info">
             <label htmlFor="note_tag" className="tag_wrapper">
               #
-              <TextareaAutosize
+              <textarea
+                rows={1}
                 className="note_textArea note_tag"
                 id="note_tag"
                 spellCheck="false"
@@ -82,7 +83,7 @@ const NoteModal = ({ note, setNote, setShowNote, updateNote }) => {
                 onChange={(e) =>
                   setNote({ ...note, [e.target.name]: e.target.value })
                 }
-              ></TextareaAutosize>
+              ></textarea>
             </label>
             <span className="dateTime">Edited {" " + date}</span>
             <div className="note_control">

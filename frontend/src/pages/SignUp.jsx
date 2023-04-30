@@ -5,22 +5,11 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import "../styles/signup.scss";
 
-//this function is just used for developement because if I use this website over my local wifi server then the backend cannot respond and set cookie because of same site problem
-let baseUrl = "http://localhost:8080/api";
-const detectDeviceType = () => {
-  baseUrl =
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    )
-      ? "http://192.168.1.6:8080/api"
-      : "http://localhost:8080/api";
-};
-
 async function signupUser(formData) {
   try {
     const response = await axios({
       method: "post",
-      url: `${baseUrl}/signup`,
+      url: `/api/signup`,
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +21,7 @@ async function signupUser(formData) {
     if (!error.response.data.success) {
       toast.error(error.response.data.message, {
         position: "top-right",
-        autoClose: 2500,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -49,7 +38,6 @@ const SignUp = ({ pageTitle }) => {
   //Changing Page Title as the page Loads
   useEffect(() => {
     document.title = pageTitle;
-    detectDeviceType();
   }, []);
 
   const navigate = useNavigate();
@@ -94,7 +82,7 @@ const SignUp = ({ pageTitle }) => {
     if (response && response.success) {
       toast.success("Sign Up Successfully", {
         position: "top-right",
-        autoClose: 2500,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -114,7 +102,7 @@ const SignUp = ({ pageTitle }) => {
       <div className="signup">
         <ToastContainer
           position="top-right"
-          autoClose={2500}
+          autoClose={1000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
@@ -123,6 +111,7 @@ const SignUp = ({ pageTitle }) => {
           draggable
           pauseOnHover
           theme="dark"
+          className="toast"
         />
         <h2 className="signup_title">Sign Up</h2>
         <form onSubmit={handleSignup} className="signup_form">

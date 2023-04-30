@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import "../../styles/navbar.scss";
 import LinkButton from "../Layout/LinkButton";
 import HamBurger from "./Burger/HamBurger";
@@ -8,23 +7,15 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../Context/UserContext";
 import axios from "axios";
-
-//this function is just used for developement because if I use this website over my local wifi server then the backend cannot respond and set cookie because of same site problem
-let baseUrl = "http://localhost:8080/api";
-const detectDeviceType = () => {
-  baseUrl =
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    )
-      ? "http://192.168.1.6:8080/api"
-      : "http://localhost:8080/api";
-};
+import { HiOutlineMoon } from "react-icons/hi";
+import { HiSun } from "react-icons/hi";
+// import { light } from "@mui/material/styles/createPalette";
 
 async function logoutUserRequest() {
   try {
     const response = await axios({
       method: "post",
-      url: `${baseUrl}/logout`,
+      url: `/api/logout`,
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
@@ -50,6 +41,16 @@ async function logoutUserRequest() {
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [theme, setTheme] = useState("light");
+
+  useLayoutEffect(() => {
+    const localTheme = localStorage.getItem("theme");
+    localTheme && setTheme(localTheme);
+  }, []);
+
+  useEffect(() => {
+    document.body.dataset.theme = theme;
+  }, [theme]);
 
   function handleHam() {
     setOpen(open ? false : true);
@@ -58,28 +59,40 @@ const Navbar = () => {
   const user = useContext(UserContext);
 
   async function logoutUser() {
-    detectDeviceType();
     const response = await logoutUserRequest();
     if (response?.success) {
-      toast.success("Logged Out", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
+      // toast.success("Logged Out", {
+      //   position: "top-right",
+      //   autoClose: 1000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: theme === "dark" ? "dark" : "light",
+      // });
       user.setIsAuthenticated(false);
     }
+  }
+
+  function toggleTheme() {
+    const isCurrentDark = theme === "dark";
+    setTheme(isCurrentDark ? "light" : "dark");
+    localStorage.setItem("theme", isCurrentDark ? "light" : "dark");
   }
 
   return (
     <>
       <nav>
         <LinkButton to="/" name="NoteTake" className="logo" />
-        <HamBurger handleHam={handleHam} />
+        <button className="theme_btn" onClick={toggleTheme}>
+          {theme === "light" ? (
+            <HiOutlineMoon />
+          ) : (
+            <HiSun style={{ color: "#fff" }} />
+          )}
+        </button>
+        <HamBurger handleHam={handleHam} open={open} />
         <div className="navLink">
           {user.isAuthenticated ? (
             <>
@@ -102,6 +115,7 @@ const Navbar = () => {
       <Menu
         className={`menu ${open ? "show_menu" : ""}`}
         logoutUser={logoutUser}
+        handleHam={handleHam}
       />
       <ToastContainer
         position="top-right"
@@ -113,7 +127,7 @@ const Navbar = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="dark"
+        theme={theme === "dark" ? "dark" : "light"}
         className="toast"
       />
     </>

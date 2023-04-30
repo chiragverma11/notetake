@@ -7,17 +7,6 @@ import { Masonry } from "@mui/lab";
 import { FaTrash } from "react-icons/fa";
 import NoteModal from "../components/NoteModal";
 
-//this function is just used for developement because if I use this website over my local wifi server then the backend cannot respond and set cookie because of same site problem
-let baseUrl = "http://localhost:8080/api";
-const detectDeviceType = () => {
-  baseUrl =
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    )
-      ? "http://192.168.1.6:8080/api"
-      : "http://localhost:8080/api";
-};
-
 const Home = ({ pageTitle }) => {
   // const user = useContext(UserContext);
 
@@ -36,7 +25,6 @@ const Home = ({ pageTitle }) => {
   useEffect(() => {
     //Changing Page Title as the page Loads
     document.title = pageTitle;
-    detectDeviceType();
     setLoading(true);
     getNotes();
   }, []);
@@ -46,7 +34,7 @@ const Home = ({ pageTitle }) => {
       // setLoading(true);
       const response = await axios({
         method: "get",
-        url: `${baseUrl}/notes`,
+        url: `/api/notes`,
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
@@ -66,7 +54,7 @@ const Home = ({ pageTitle }) => {
       setAdding(true);
       const response = await axios({
         method: "post",
-        url: `${baseUrl}/note`,
+        url: `/api/note`,
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
@@ -87,7 +75,7 @@ const Home = ({ pageTitle }) => {
     try {
       const response = await axios({
         method: "delete",
-        url: `${baseUrl}/note/${id}`,
+        url: `/api/note/${id}`,
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
@@ -105,7 +93,7 @@ const Home = ({ pageTitle }) => {
     try {
       const response = await axios({
         method: "patch",
-        url: `${baseUrl}/note/${note._id}`,
+        url: `/api/note/${note._id}`,
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
@@ -196,7 +184,7 @@ const Home = ({ pageTitle }) => {
         </div>
         <div className="notes_wrapper">
           {loading ? (
-            <p>Loading...</p>
+            <p className="loading">Loading...</p>
           ) : notes.length === 0 ? (
             <p className="alt_notes">Notes you add appear here</p>
           ) : (

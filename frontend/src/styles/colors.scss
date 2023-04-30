@@ -1,12 +1,62 @@
-$primary: hsla(227, 100%, 24%, 0.85);
-$primary-hover: hsla(227, 50%, 50%, 0.85);
-$primary-active: hsla(227, 100%, 24%, 0.85);
+$background-light: #fff;
+$background-dark: hsl(220, 15%, 16%);
+
+$modal-bg-light: rgba(
+  $color: #fff,
+  $alpha: 1,
+);
+$modal-bg-dark: rgba(
+  $color: hsl(227, 15%, 23%),
+  $alpha: 1,
+);
+
+$primary-light: hsla(227, 100%, 24%, 0.85);
+$primary-dark: hsl(235, 40%, 53%);
+$primary-hover-light: hsla(227, 50%, 50%, 0.85);
+$primary-hover-dark: hsl(235, 40%, 65%);
+$primary-active-light: hsla(227, 100%, 40%, 0.85);
+$primary-active-dark: hsl(235, 40%, 45%);
+
+// $secondary-light: hsl(195, 82%, 44%);
+$secondary-dark: hsl(195, 82%, 44%);
+
+$text-dark: #000000;
+$text-light: #f5f5f5;
+
+$btn-hover-light: hsl(214, 32%, 91%);
+$btn-hover-dark: hsl(227, 15%, 23%);
+
+$btn-active-light: hsl(214, 32%, 80%);
+$btn-active-dark: hsl(227, 15%, 18%);
+
+$heading-light: #f5f5f5;
+$heading-dark: #000000;
 $blue-400: hsl(217, 91%, 60%);
 $blue-500: hsl(217, 91%, 50%);
 $blue-600: hsl(217, 91%, 40%);
-$slate-200: hsl(214, 32%, 91%);
-$slate-300: hsl(214, 32%, 85%);
+
+$input-bg-light: hsl(214, 32%, 91%);
+$input-bg-dark: hsl(227, 15%, 23%);
+
+$textarea-bg-light: #fff;
+$textarea-bg-dark: hsl(227, 15%, 23%);
+
 $slate-400: hsl(214, 32%, 55%);
-$slate-600: hsl(215, 19%, 35%);
+
+$placeholder-dark: #efefef;
+$placeholder-light: hsl(215, 19%, 35%);
+
+$card-hover-light: rgba(0, 0, 0, 0.3);
+$card-hover-dark: hsla(0, 0%, 100%, 0.3);
+
 $slate-700: hsl(215, 19%, 25%);
 // $slate-600: hsl(215, 19%, 40%);
+
+//Delete these
+
+$primary: hsla(227, 100%, 24%, 0.85);
+$slate-200: hsl(214, 30%, 91%);
+$slate-600: hsl(215, 19%, 35%);
+$primary-hover: hsla(227, 50%, 50%, 0.85);
+$primary-active: hsla(227, 100%, 40%, 0.85);
+$slate-300: hsl(214, 32%, 85%);
