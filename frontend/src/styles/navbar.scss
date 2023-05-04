@@ -12,6 +12,7 @@ body[data-theme="light"] {
   --placeholder: #{$placeholder-light};
   --secondary: #{$heading-dark};
   --btn-hover: #{$btn-hover-light};
+  --scroll-thumb: #{$scroll-thumb};
 }
 body[data-theme="dark"] {
   --primary-background: #{$background-dark};
@@ -30,6 +31,21 @@ body[data-theme="dark"] {
 body {
   background-color: var(--primary-background);
   // transition: background-color 0.15s ease-in-out;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    // &:hover {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    // }
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background-color: rgba($color: $scroll-thumb, $alpha: 1);
+    &:hover {
+      background-color: rgba($color: $scroll-thumb, $alpha: 0.5);
+    }
+  }
 }
 
 header {

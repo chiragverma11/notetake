@@ -1,116 +1,155 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import "../styles/home.scss";
-// import { UserContext } from "../Context/UserContext";
 import axios from "axios";
 import { TextareaAutosize } from "@mui/base";
 import { Masonry } from "@mui/lab";
 import { FaTrash } from "react-icons/fa";
 import NoteModal from "../components/NoteModal";
+import useClickOutside from "../hooks/useClickOutside";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchNotes,
+  addNote,
+  deleteNote,
+  updateNote,
+  noteChanged,
+} from "../slices/noteSlice";
+// import { AppContext } from "../Context/AppContext";
 
 const Home = ({ pageTitle }) => {
-  // const user = useContext(UserContext);
+  const dispatch = useDispatch();
 
+  const isLoading = useSelector((state) => state.note.isLoading);
+  const isAdding = useSelector((state) => state.note.isAdding);
+  const isNoteChange = useSelector((state) => state.note.isNoteChange);
+  const notess = useSelector((state) => state.note.notes);
+
+  //Context
+  // const [state, dispatch] = useContext(AppContext);
+
+  //useStates
   const [newNote, setNewNote] = useState({
     title: "",
     description: "",
     tag: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [adding, setAdding] = useState(false);
-  const [notes, setNotes] = useState([]);
+  // const [notes, setNotes] = useState([]);
   const [note, setNote] = useState({});
   const [showNote, setShowNote] = useState(false);
-  // const [isChange, setIsChange] = useState(false);
+  const noteRef = useRef(null);
 
   useEffect(() => {
     //Changing Page Title as the page Loads
     document.title = pageTitle;
-    setLoading(true);
-    getNotes();
+    // dispatch({ type: "LOAD_NOTES_REQUEST" });
+    dispatch(fetchNotes());
+    // getNotes();
   }, []);
 
-  async function getNotes() {
-    try {
-      // setLoading(true);
-      const response = await axios({
-        method: "get",
-        url: `/api/notes`,
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      setNotes(response.data.notes);
-      return setLoading(false);
-    } catch (error) {
-      if (!error.response.data.success) {
-        console.error(error.toJSON());
-      }
-    }
+  useEffect(() => {
+    console.log(isNoteChange);
+    isNoteChange && handleUpdateNote();
+    return () => {
+      dispatch(noteChanged(false));
+    };
+  }, [setShowNote]);
+
+  const clickOutside = useClickOutside();
+  clickOutside(noteRef, () => {
+    setShowNote(false);
+  });
+
+  // async function getNotes() {
+  //   try {
+  //     const response = await axios({
+  //       method: "get",
+  //       url: `/api/notes`,
+  //       withCredentials: true,
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     setNotes(response.data.notes);
+
+  //     // dispatch({ type: "LOAD_NOTES_SUCCESS", payload: response.data.notes });
+  //   } catch (error) {
+  //     if (!error.response.data.success) {
+  //       console.error(error.toJSON());
+  //     }
+  //   }
+  // }
+
+  async function handleNewNote() {
+    // try {
+    //   // dispatch({ type: "NEW_NOTE_REQUEST" });
+
+    //   const response = await axios({
+    //     method: "post",
+    //     url: `/api/note`,
+    //     withCredentials: true,
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     data: newNote,
+    //   });
+
+    // dispatch({ type: "NEW_NOTE_SUCCESS" });
+    dispatch(addNote(newNote));
+    setNewNote({ title: "", description: "", tag: "" });
+    // dispatch(fetchNotes());
+    // return getNotes();
+    // } catch (error) {
+    //   if (!error.response.data.success) {
+    //     console.error(error.toJSON());
+    //   }
+    // }
   }
 
-  async function addNote() {
-    try {
-      setAdding(true);
-      const response = await axios({
-        method: "post",
-        url: `/api/note`,
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: newNote,
-      });
-      setNewNote({ title: "", description: "", tag: "" });
-      setAdding(false);
-      return getNotes();
-    } catch (error) {
-      if (!error.response.data.success) {
-        console.error(error.toJSON());
-      }
-    }
+  async function handleDeleteNote(id) {
+    // try {
+    //   const response = await axios({
+    //     method: "delete",
+    //     url: `/api/note/${id}`,
+    //     withCredentials: true,
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   });
+    //   dispatch(fetchNotes());
+    //   // return getNotes();
+    // } catch (error) {
+    //   if (!error.response.data.success) {
+    //     console.error(error.toJSON());
+    //   }
+    // }
+    dispatch(deleteNote(id));
   }
 
-  async function deleteNote(id) {
-    try {
-      const response = await axios({
-        method: "delete",
-        url: `/api/note/${id}`,
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      return getNotes();
-    } catch (error) {
-      if (!error.response.data.success) {
-        console.error(error.toJSON());
-      }
-    }
-  }
-
-  async function updateNote() {
-    try {
-      const response = await axios({
-        method: "patch",
-        url: `/api/note/${note._id}`,
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: note,
-      });
-      return getNotes();
-    } catch (error) {
-      if (!error.response.data.success) {
-        console.error(error.toJSON());
-      }
-    }
+  async function handleUpdateNote() {
+    // try {
+    //   const response = await axios({
+    //     method: "patch",
+    //     url: `/api/note/${note._id}`,
+    //     withCredentials: true,
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     data: note,
+    //   });
+    //   dispatch(fetchNotes());
+    //   // return getNotes();
+    // } catch (error) {
+    //   if (!error.response.data.success) {
+    //     console.error(error.toJSON());
+    //   }
+    // }
+    console.log("updat");
+    dispatch(updateNote(note));
   }
 
   async function viewNote(index) {
     setShowNote(true);
-    setNote(() => notes[notes.length - 1 - index]);
+    setNote(() => notess[notess.length - 1 - index]);
   }
 
   return (
@@ -161,19 +200,19 @@ const Home = ({ pageTitle }) => {
                     (newNote.title.length == 0 &&
                       newNote.description.length == 0 &&
                       newNote.tag.length == 0) ||
-                    adding
+                    isAdding
                   }
                 >
                   Reset
                 </button>
                 <button
                   className="newNote_btn save_btn"
-                  onClick={addNote}
+                  onClick={handleNewNote}
                   disabled={
                     (newNote.title.length == 0 &&
                       newNote.description.length == 0 &&
                       newNote.tag.length == 0) ||
-                    adding
+                    isAdding
                   }
                 >
                   Save
@@ -183,9 +222,9 @@ const Home = ({ pageTitle }) => {
           </div>
         </div>
         <div className="notes_wrapper">
-          {loading ? (
+          {isLoading ? (
             <p className="loading">Loading...</p>
-          ) : notes.length === 0 ? (
+          ) : notess.length === 0 ? (
             <p className="alt_notes">Notes you add appear here</p>
           ) : (
             <>
@@ -194,7 +233,7 @@ const Home = ({ pageTitle }) => {
                 spacing={2}
                 className="masonry_layout"
               >
-                {notes
+                {notess
                   .slice()
                   .reverse()
                   .map((note, index) => {
@@ -220,7 +259,7 @@ const Home = ({ pageTitle }) => {
                           className="note_delete"
                           id="deleteNote"
                           onClick={() => {
-                            deleteNote(note._id);
+                            handleDeleteNote(note._id);
                           }}
                         >
                           <FaTrash pointerEvents={"none"} />
@@ -238,7 +277,8 @@ const Home = ({ pageTitle }) => {
           note={note}
           setNote={setNote}
           setShowNote={setShowNote}
-          updateNote={updateNote}
+          handleUpdateNote={handleUpdateNote}
+          noteRef={noteRef}
         />
       )}
     </>

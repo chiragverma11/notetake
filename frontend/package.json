@@ -8,7 +8,8 @@
     "dev": "vite",
     "host": "vite --host",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "previewhost": "vite preview --host"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -16,11 +17,13 @@
     "@mui/base": "^5.0.0-alpha.127",
     "@mui/lab": "^5.0.0-alpha.128",
     "@mui/material": "^5.12.2",
+    "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.3.5",
     "bricks.js": "^1.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
+    "react-redux": "^8.0.5",
     "react-router-dom": "^6.10.0",
     "react-toastify": "^9.1.2",
     "styled-components": "^5.3.9"

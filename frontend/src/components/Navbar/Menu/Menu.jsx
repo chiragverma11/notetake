@@ -1,9 +1,14 @@
 import React, { useContext } from "react";
 import LinkButton from "../../Layout/LinkButton";
-import { UserContext } from "../../../Context/UserContext";
+import { AppContext } from "../../../Context/AppContext";
+import { useDispatch, useSelector } from "react-redux";
 
 const Menu = ({ className, logoutUser, handleHam }) => {
-  const user = useContext(UserContext);
+  // const [state, dispatch] = useContext(AppContext);
+  const dispatcH = useDispatch();
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
   return (
     <ul className={className}>
       <LinkButton
@@ -12,16 +17,16 @@ const Menu = ({ className, logoutUser, handleHam }) => {
         className="menu_btn"
         handleHam={handleHam}
       />
-      {user.isAuthenticated ? (
-        <input
-          type="button"
+      {isAuthenticated ? (
+        <button
           className="menu_btn"
-          value="Logout"
           onClick={() => {
             logoutUser();
             handleHam();
           }}
-        />
+        >
+          Logout
+        </button>
       ) : (
         <>
           <LinkButton

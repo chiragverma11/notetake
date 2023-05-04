@@ -5,11 +5,12 @@ import HamBurger from "./Burger/HamBurger";
 import Menu from "./Menu/Menu";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { UserContext } from "../../Context/UserContext";
+import { AppContext } from "../../Context/AppContext";
 import axios from "axios";
 import { HiOutlineMoon } from "react-icons/hi";
 import { HiSun } from "react-icons/hi";
-// import { light } from "@mui/material/styles/createPalette";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../slices/authSlice";
 
 async function logoutUserRequest() {
   try {
@@ -43,6 +44,11 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState("light");
 
+  const dispatch = useDispatch();
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const userDetails = useSelector((state) => state.auth.userDetails);
+
   useLayoutEffect(() => {
     const localTheme = localStorage.getItem("theme");
     localTheme && setTheme(localTheme);
@@ -55,24 +61,26 @@ const Navbar = () => {
   function handleHam() {
     setOpen(open ? false : true);
   }
-  //Using Usercontext
-  const user = useContext(UserContext);
+
+  // const [state, dispatch] = useContext(AppContext);
 
   async function logoutUser() {
-    const response = await logoutUserRequest();
-    if (response?.success) {
-      // toast.success("Logged Out", {
-      //   position: "top-right",
-      //   autoClose: 1000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: theme === "dark" ? "dark" : "light",
-      // });
-      user.setIsAuthenticated(false);
-    }
+    dispatch(logout());
+    // const response = await logoutUserRequest();
+    // if (response?.success) {
+    // toast.success("Logged Out", {
+    //   position: "top-right",
+    //   autoClose: 1000,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    //   theme: theme === "dark" ? "dark" : "light",
+    // });
+    // user.setIsAuthenticated(false);
+    // dispatch({ type: "LOGOUT_USER_SUCCESS" });
+    // }
   }
 
   function toggleTheme() {
@@ -86,17 +94,13 @@ const Navbar = () => {
       <nav>
         <LinkButton to="/" name="NoteTake" className="logo" />
         <button className="theme_btn" onClick={toggleTheme}>
-          {theme === "light" ? (
-            <HiOutlineMoon />
-          ) : (
-            <HiSun style={{ color: "#fff" }} />
-          )}
+          {theme === "light" ? <HiSun /> : <HiOutlineMoon />}
         </button>
         <HamBurger handleHam={handleHam} open={open} />
         <div className="navLink">
-          {user.isAuthenticated ? (
+          {isAuthenticated ? (
             <>
-              <p className="userName">Hi, {user.userDetails.name}</p>
+              <p className="userName">Hi, {userDetails?.name}</p>
               <input
                 type="button"
                 className="navlink_btn"

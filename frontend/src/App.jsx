@@ -11,7 +11,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/SignUp";
 import Navbar from "./components/Navbar/Navbar";
 import ProtectedRoute from "./utils/ProtectedRoute";
-import { UserContext } from "./Context/UserContext";
+import { AppContextProvider, UserContext } from "./Context/AppContext";
 import { useState } from "react";
 
 //Header Component for Navbar
@@ -48,16 +48,18 @@ function App() {
   const [userDetails, setUserDetails] = useState({});
   return (
     <>
-      <UserContext.Provider
-        value={{
-          isAuthenticated,
-          setIsAuthenticated,
-          userDetails,
-          setUserDetails,
-        }}
-      >
-        <RouterProvider router={router} />
-      </UserContext.Provider>
+      {/* <AppContextProvider> */}
+      {/* <UserContext.Provider
+          value={{
+            isAuthenticated,
+            setIsAuthenticated,
+            userDetails,
+            setUserDetails,
+          }}
+        > */}
+      <RouterProvider router={router} />
+      {/* </UserContext.Provider> */}
+      {/* </AppContextProvider> */}
     </>
   );
 }

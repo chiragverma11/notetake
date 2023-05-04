@@ -49,11 +49,14 @@ $placeholder-light: hsl(215, 19%, 35%);
 $card-hover-light: rgba(0, 0, 0, 0.3);
 $card-hover-dark: hsla(0, 0%, 100%, 0.3);
 
+$scroll-thumb: rgba(
+  $color: #686868,
+  $alpha: 0.3,
+);
+
 $slate-700: hsl(215, 19%, 25%);
-// $slate-600: hsl(215, 19%, 40%);
 
 //Delete these
-
 $primary: hsla(227, 100%, 24%, 0.85);
 $slate-200: hsl(214, 30%, 91%);
 $slate-600: hsl(215, 19%, 35%);

@@ -38,12 +38,14 @@ const updateNote = catchAsyncError(async (req, res, next) => {
     }
   );
 
+  const afterUpdated = await Note.findById(req.params.id);
+
   // If Note Not found
   if (!updatedNote) {
     return next(new ErrorHandler("Note not Found", 400));
   }
 
-  return res.json({ success: true, updatedNote });
+  return res.json({ success: true, afterUpdated });
 });
 
 //delete Note Controller

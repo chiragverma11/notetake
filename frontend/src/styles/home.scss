@@ -157,20 +157,20 @@ main {
   .loading {
     text-align: center;
     font-weight: 500;
-    // color: $slate-400;
+    font-size: 1.25rem;
     animation: pulse 2s infinite;
     transition: 0.1s;
   }
 
   @keyframes pulse {
     0% {
-      color: rgba($color: #000000, $alpha: 1);
+      color: rgba($color: #8c8c8c, $alpha: 1);
     }
     50% {
-      color: rgba($color: #000000, $alpha: 0);
+      color: rgba($color: #8c8c8c, $alpha: 0);
     }
     100% {
-      color: rgba($color: #000000, $alpha: 1);
+      color: rgba($color: #8c8c8c, $alpha: 1);
     }
   }
 
@@ -346,7 +346,7 @@ main {
         // flex: 0 1 10%;
         width: 25%;
         @media (min-width: 600px) {
-          width: 20%;
+          width: 22%;
         }
 
         .note_tag {
@@ -376,8 +376,13 @@ main {
         }
       }
       .dateTime {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+        padding: 0 0.35rem;
         transition: all 0.2s ease-in-out;
+        @media (min-width: 600px) {
+          font-size: 0.9rem;
+          padding: 0;
+        }
       }
 
       .note_control {
@@ -390,7 +395,7 @@ main {
 
         .note_btn {
           font-weight: 500;
-          padding: 0.4rem 0.25rem;
+          padding: 0.4rem 0.2rem;
           border-radius: 0.25rem;
           transition: 0.1s ease-in-out;
           @media (min-width: 600px) {

@@ -1,13 +1,14 @@
 import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
-import { UserContext } from "../Context/UserContext";
+// import { AppContext } from "../Context/AppContext";
 
 const ProtectedRoute = () => {
-  //Using Usercontext
-  const user = useContext(UserContext);
+  // const [state, dispatch] = useContext(AppContext);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   return (
-    <>{!user.isAuthenticated ? <Navigate to="/login" replace /> : <Outlet />}</>
+    <>{!isAuthenticated ? <Navigate to="/login" replace /> : <Outlet />}</>
   );
 };
 

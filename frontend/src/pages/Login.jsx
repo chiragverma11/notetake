@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { UserContext } from "../Context/UserContext";
+import { AppContext } from "../Context/AppContext";
 import "../styles/login.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../slices/authSlice";
+import spinner from "../assets/spinner.svg";
 
 async function loginUser(formData) {
   try {
@@ -36,21 +39,23 @@ async function loginUser(formData) {
 
 //Main Function
 const Login = ({ pageTitle }) => {
-  //Changing Page Title as the page Loads
-  useEffect(() => {
-    document.title = pageTitle;
-  }, []);
+  const dispatch = useDispatch();
 
-  //Using Usercontext
-  const user = useContext(UserContext);
+  const isLoading = useSelector((state) => state.auth.isLoading);
 
-  const navigate = useNavigate();
-
-  //Use States for Input Form
   const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    //Changing Page Title as the page Loads
+    document.title = pageTitle;
+  }, []);
+
+  // const [state, dispatch] = useContext(AppContext);
+
+  const navigate = useNavigate();
 
   //HandleChange for changing input value
   function handleDataChange(e) {
@@ -66,26 +71,19 @@ const Login = ({ pageTitle }) => {
       password: userData.password,
     };
 
-    const response = await loginUser(formData);
+    dispatch(login(formData)).then(() => {
+      navigate("/");
+    });
+
+    // const response = await loginUser(formData);
     //If response is success or there is no error
-    if (response?.success) {
-      // toast.success("Login Successfully", {
-      //   position: "top-right",
-      //   autoClose: 1000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: "dark",
-      // });
-      setUserData({ email: "", password: "" });
-      user.setIsAuthenticated(true);
-      user.setUserDetails(response.user);
-      setTimeout(() => {
-        navigate("/");
-      }, 0);
-    }
+    // if (response?.success) {
+    //   setUserData({ email: "", password: "" });
+    // dispatch({ type: "LOGIN_USER_SUCCESS", payload: response.user });
+    // setTimeout(() => {
+    //   navigate("/");
+    // }, 0);
+    // }
   }
 
   return (
@@ -125,6 +123,7 @@ const Login = ({ pageTitle }) => {
             className="login_form_input"
           />
           <button type="submit" name="login" className="loginBtn">
+            {/* {isLoading ? "Logging..." : "Login"} */}
             Login
           </button>
         </form>

@@ -4,6 +4,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import "../styles/signup.scss";
+import { signup } from "../slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 async function signupUser(formData) {
   try {
@@ -35,6 +37,9 @@ async function signupUser(formData) {
 
 //Main Function
 const SignUp = ({ pageTitle }) => {
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.auth.isLoading);
+
   //Changing Page Title as the page Loads
   useEffect(() => {
     document.title = pageTitle;
@@ -77,6 +82,7 @@ const SignUp = ({ pageTitle }) => {
       password: user.password,
     };
 
+    console.log(dispatch(signup()));
     const response = await signupUser(formData);
     //If response is success or there is no error
     if (response && response.success) {

@@ -1,21 +1,33 @@
 import { createPortal } from "react-dom";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { TextareaAutosize } from "@mui/base";
+import { noteChanged } from "../slices/noteSlice";
 
-const NoteModal = ({ note, setNote, setShowNote, updateNote }) => {
+const NoteModal = ({
+  note,
+  setNote,
+  setShowNote,
+  handleUpdateNote,
+  noteRef,
+}) => {
+  const dispatch = useDispatch();
+  const isNoteChange = useSelector((state) => state.note.isNoteChange);
+
   const [date, setDate] = useState(null);
-  const [isChange, setIsChange] = useState(false);
 
   useEffect(() => {
     formatDate();
-  }, [isChange]);
+  }, [isNoteChange]);
 
   const formatDate = () => {
     const dateString = new Date(note.updatedAt);
+    const currentDate = new Date();
+    const compareDateYear =
+      dateString.getDate() == currentDate.getDate() &&
+      dateString.getFullYear() == currentDate.getFullYear();
 
-    const currentDate = new Date().toDateString();
-
-    if (dateString.toDateString == currentDate) {
+    if (!compareDateYear) {
       setDate(
         dateString.toLocaleDateString(undefined, {
           year: "numeric",
@@ -40,7 +52,7 @@ const NoteModal = ({ note, setNote, setShowNote, updateNote }) => {
   return createPortal(
     <>
       <div className="noteModal">
-        <div className="note_container">
+        <div className="note_container" ref={noteRef}>
           <div className="note_details">
             <TextareaAutosize
               className="note_textArea note_title"
@@ -48,7 +60,7 @@ const NoteModal = ({ note, setNote, setShowNote, updateNote }) => {
               value={note.title}
               name="title"
               onInput={() => {
-                setIsChange(true);
+                dispatch(noteChanged(true));
               }}
               onChange={(e) =>
                 setNote({ ...note, [e.target.name]: e.target.value })
@@ -60,7 +72,7 @@ const NoteModal = ({ note, setNote, setShowNote, updateNote }) => {
               value={note.description}
               name="description"
               onInput={() => {
-                setIsChange(true);
+                dispatch(noteChanged(true));
               }}
               onChange={(e) =>
                 setNote({ ...note, [e.target.name]: e.target.value })
@@ -78,7 +90,7 @@ const NoteModal = ({ note, setNote, setShowNote, updateNote }) => {
                 value={note.tag}
                 name="tag"
                 onInput={() => {
-                  setIsChange(true);
+                  dispatch(noteChanged(true));
                 }}
                 onChange={(e) =>
                   setNote({ ...note, [e.target.name]: e.target.value })
@@ -91,8 +103,7 @@ const NoteModal = ({ note, setNote, setShowNote, updateNote }) => {
                 className="note_btn close_btn"
                 onClick={() => {
                   setShowNote(false);
-
-                  isChange && updateNote();
+                  isNoteChange && handleUpdateNote();
                 }}
               >
                 Close
