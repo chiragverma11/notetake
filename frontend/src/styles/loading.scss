@@ -1,0 +1,23 @@
+.loadingWrapper {
+  padding: 10rem;
+
+  .loading {
+    text-align: center;
+    font-weight: 500;
+    font-size: 1.25rem;
+    animation: pulse 2s infinite;
+    transition: 0.1s;
+  }
+
+  @keyframes pulse {
+    0% {
+      color: rgba($color: #8c8c8c, $alpha: 1);
+    }
+    50% {
+      color: rgba($color: #8c8c8c, $alpha: 0);
+    }
+    100% {
+      color: rgba($color: #8c8c8c, $alpha: 1);
+    }
+  }
+}

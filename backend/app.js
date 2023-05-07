@@ -1,6 +1,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import morgan from "morgan";
 import errorMiddleware from "./middlewares/errorMiddleware.js";
 import * as dotenv from "dotenv";
 
@@ -20,6 +21,8 @@ app.use(
     ],
   })
 );
+
+app.use(morgan("tiny"));
 
 //Cookie Parser for Accessing cookies
 app.use(cookieParser());

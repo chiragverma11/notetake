@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import noteService from "../services/noteService";
 
-export const fetchNotes = createAsyncThunk("fetchNotes", async () => {
+export const fetchNotes = createAsyncThunk("notes/fetchNotes", async () => {
   const response = await noteService.fetchNotes();
   return response.data.notes;
 });

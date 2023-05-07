@@ -1,14 +1,21 @@
-import React, { useContext } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-// import { AppContext } from "../Context/AppContext";
+import { useSelector } from "react-redux";
+import Loading from "../components/Loading";
 
-const ProtectedRoute = () => {
-  // const [state, dispatch] = useContext(AppContext);
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+const ProtectedRoute = ({ isAuthenticated, redirect = "/login" }) => {
+  const { isLoading } = useSelector((state) => state.auth);
 
   return (
-    <>{!isAuthenticated ? <Navigate to="/login" replace /> : <Outlet />}</>
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : !isAuthenticated ? (
+        <Navigate to={redirect} replace />
+      ) : (
+        <Outlet />
+      )}
+    </>
   );
 };
 

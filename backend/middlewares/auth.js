@@ -13,7 +13,7 @@ const isAuthenticated = catchAsyncError(async (req, res, next) => {
 
   //Verifying token
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  req.user = await User.findOne({ _id: decoded.id });
+  req.user = await User.findOne({ _id: decoded._id });
   next();
 });
 

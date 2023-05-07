@@ -27,6 +27,14 @@ const authService = {
       throw new Error(error);
     }
   },
+  loadUser: async () => {
+    try {
+      const res = await api.get("user");
+      return res;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
 };
 
 export default authService;

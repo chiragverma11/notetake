@@ -1,44 +1,14 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import "../../styles/navbar.scss";
 import LinkButton from "../Layout/LinkButton";
 import HamBurger from "./Burger/HamBurger";
 import Menu from "./Menu/Menu";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { AppContext } from "../../Context/AppContext";
-import axios from "axios";
 import { HiOutlineMoon } from "react-icons/hi";
 import { HiSun } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../slices/authSlice";
-
-async function logoutUserRequest() {
-  try {
-    const response = await axios({
-      method: "post",
-      url: `/api/logout`,
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return response.data;
-  } catch (error) {
-    if (!error.response.data.success) {
-      toast.error(error.response.data.message, {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-    }
-    console.error(error);
-  }
-}
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -62,25 +32,8 @@ const Navbar = () => {
     setOpen(open ? false : true);
   }
 
-  // const [state, dispatch] = useContext(AppContext);
-
   async function logoutUser() {
     dispatch(logout());
-    // const response = await logoutUserRequest();
-    // if (response?.success) {
-    // toast.success("Logged Out", {
-    //   position: "top-right",
-    //   autoClose: 1000,
-    //   hideProgressBar: false,
-    //   closeOnClick: true,
-    //   pauseOnHover: true,
-    //   draggable: true,
-    //   progress: undefined,
-    //   theme: theme === "dark" ? "dark" : "light",
-    // });
-    // user.setIsAuthenticated(false);
-    // dispatch({ type: "LOGOUT_USER_SUCCESS" });
-    // }
   }
 
   function toggleTheme() {

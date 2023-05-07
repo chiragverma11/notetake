@@ -16,9 +16,13 @@ export const logout = createAsyncThunk("logout", async () => {
   return response.data;
 });
 
+export const loadUser = createAsyncThunk("loadUser", async () => {
+  const response = await authService.loadUser();
+  return response.data;
+});
+
 const initialState = {
   isAuthenticated: false,
-  token: null,
   isLoading: false,
   error: null,
   userDetails: null,
@@ -29,7 +33,7 @@ const authSlice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder
+    builder //Login Case
       .addCase(login.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -37,13 +41,26 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = true;
-        state.userDetails = action.payload.user;
+        state.userDetails = action.payload.userDetails;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = false;
         state.error = action.error.message;
+      }) //Signup Case
+      .addCase(signup.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
       })
+      .addCase(signup.fulfilled, (state, action) => {
+        state.isLoading = false;
+        // state.isAuthenticated = false;
+        // state.userDetails = null;
+      })
+      .addCase(signup.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      }) //Logout Case
       .addCase(logout.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -56,18 +73,19 @@ const authSlice = createSlice({
       .addCase(logout.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
-      })
-      .addCase(signup.pending, (state) => {
+      }) //LoadUser Case
+      .addCase(loadUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(signup.fulfilled, (state, action) => {
+      .addCase(loadUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        // state.isAuthenticated = false;
-        // state.userDetails = null;
+        state.isAuthenticated = true;
+        state.userDetails = action.payload.userDetails;
       })
-      .addCase(signup.rejected, (state, action) => {
+      .addCase(loadUser.rejected, (state, action) => {
         state.isLoading = false;
+        state.isAuthenticated = false;
         state.error = action.error.message;
       });
   },

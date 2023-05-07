@@ -74,4 +74,17 @@ const logoutUser = catchAsyncError(async (req, res, next) => {
   });
 });
 
-export { signupUser, loginUser, logoutUser };
+const loadUser = catchAsyncError(async (req, res, next) => {
+  const user = await User.findOne(req.user._id);
+
+  res.status(200).json({
+    success: true,
+    userDetails: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    },
+  });
+});
+
+export { signupUser, loginUser, logoutUser, loadUser };

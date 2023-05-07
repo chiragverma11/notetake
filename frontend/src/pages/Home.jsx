@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "../styles/home.scss";
-import axios from "axios";
 import { TextareaAutosize } from "@mui/base";
 import { Masonry } from "@mui/lab";
 import { FaTrash } from "react-icons/fa";
 import NoteModal from "../components/NoteModal";
 import useClickOutside from "../hooks/useClickOutside";
-import { useDispatch, useSelector } from "react-redux";
 import {
   fetchNotes,
   addNote,
@@ -14,7 +13,6 @@ import {
   updateNote,
   noteChanged,
 } from "../slices/noteSlice";
-// import { AppContext } from "../Context/AppContext";
 
 const Home = ({ pageTitle }) => {
   const dispatch = useDispatch();
@@ -24,126 +22,45 @@ const Home = ({ pageTitle }) => {
   const isNoteChange = useSelector((state) => state.note.isNoteChange);
   const notess = useSelector((state) => state.note.notes);
 
-  //Context
-  // const [state, dispatch] = useContext(AppContext);
-
   //useStates
   const [newNote, setNewNote] = useState({
     title: "",
     description: "",
     tag: "",
   });
-  // const [notes, setNotes] = useState([]);
   const [note, setNote] = useState({});
   const [showNote, setShowNote] = useState(false);
+
   const noteRef = useRef(null);
 
   useEffect(() => {
     //Changing Page Title as the page Loads
     document.title = pageTitle;
-    // dispatch({ type: "LOAD_NOTES_REQUEST" });
     dispatch(fetchNotes());
-    // getNotes();
   }, []);
 
   useEffect(() => {
-    console.log(isNoteChange);
     isNoteChange && handleUpdateNote();
     return () => {
-      dispatch(noteChanged(false));
+      isNoteChange && dispatch(noteChanged(false));
     };
-  }, [setShowNote]);
+  }, [showNote]);
 
   const clickOutside = useClickOutside();
   clickOutside(noteRef, () => {
     setShowNote(false);
   });
 
-  // async function getNotes() {
-  //   try {
-  //     const response = await axios({
-  //       method: "get",
-  //       url: `/api/notes`,
-  //       withCredentials: true,
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     setNotes(response.data.notes);
-
-  //     // dispatch({ type: "LOAD_NOTES_SUCCESS", payload: response.data.notes });
-  //   } catch (error) {
-  //     if (!error.response.data.success) {
-  //       console.error(error.toJSON());
-  //     }
-  //   }
-  // }
-
   async function handleNewNote() {
-    // try {
-    //   // dispatch({ type: "NEW_NOTE_REQUEST" });
-
-    //   const response = await axios({
-    //     method: "post",
-    //     url: `/api/note`,
-    //     withCredentials: true,
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     data: newNote,
-    //   });
-
-    // dispatch({ type: "NEW_NOTE_SUCCESS" });
     dispatch(addNote(newNote));
     setNewNote({ title: "", description: "", tag: "" });
-    // dispatch(fetchNotes());
-    // return getNotes();
-    // } catch (error) {
-    //   if (!error.response.data.success) {
-    //     console.error(error.toJSON());
-    //   }
-    // }
   }
 
   async function handleDeleteNote(id) {
-    // try {
-    //   const response = await axios({
-    //     method: "delete",
-    //     url: `/api/note/${id}`,
-    //     withCredentials: true,
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   });
-    //   dispatch(fetchNotes());
-    //   // return getNotes();
-    // } catch (error) {
-    //   if (!error.response.data.success) {
-    //     console.error(error.toJSON());
-    //   }
-    // }
     dispatch(deleteNote(id));
   }
 
   async function handleUpdateNote() {
-    // try {
-    //   const response = await axios({
-    //     method: "patch",
-    //     url: `/api/note/${note._id}`,
-    //     withCredentials: true,
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     data: note,
-    //   });
-    //   dispatch(fetchNotes());
-    //   // return getNotes();
-    // } catch (error) {
-    //   if (!error.response.data.success) {
-    //     console.error(error.toJSON());
-    //   }
-    // }
-    console.log("updat");
     dispatch(updateNote(note));
   }
 

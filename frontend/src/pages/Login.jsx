@@ -1,43 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-import { AppContext } from "../Context/AppContext";
 import "../styles/login.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../slices/authSlice";
 import spinner from "../assets/spinner.svg";
 
-async function loginUser(formData) {
-  try {
-    const response = await axios({
-      method: "post",
-      url: `/api/login`,
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: formData,
-    });
-    return response.data;
-  } catch (error) {
-    if (!error.response.data.success) {
-      toast.error(error.response.data.message, {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-    }
-  }
-}
-
-//Main Function
 const Login = ({ pageTitle }) => {
   const dispatch = useDispatch();
 
@@ -52,8 +21,6 @@ const Login = ({ pageTitle }) => {
     //Changing Page Title as the page Loads
     document.title = pageTitle;
   }, []);
-
-  // const [state, dispatch] = useContext(AppContext);
 
   const navigate = useNavigate();
 
@@ -71,19 +38,8 @@ const Login = ({ pageTitle }) => {
       password: userData.password,
     };
 
-    dispatch(login(formData)).then(() => {
-      navigate("/");
-    });
-
-    // const response = await loginUser(formData);
-    //If response is success or there is no error
-    // if (response?.success) {
-    //   setUserData({ email: "", password: "" });
-    // dispatch({ type: "LOGIN_USER_SUCCESS", payload: response.user });
-    // setTimeout(() => {
-    //   navigate("/");
-    // }, 0);
-    // }
+    dispatch(login(formData));
+    navigate("/");
   }
 
   return (

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 
 // This just creates HamBurger Icon for Menu Option
 const HamBurger = ({ handleHam, open }) => {

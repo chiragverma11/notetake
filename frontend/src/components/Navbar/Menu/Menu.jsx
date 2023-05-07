@@ -1,10 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import LinkButton from "../../Layout/LinkButton";
-import { AppContext } from "../../../Context/AppContext";
 import { useDispatch, useSelector } from "react-redux";
 
 const Menu = ({ className, logoutUser, handleHam }) => {
-  // const [state, dispatch] = useContext(AppContext);
   const dispatcH = useDispatch();
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);

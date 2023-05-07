@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -11,8 +12,8 @@ import Login from "./pages/Login";
 import Signup from "./pages/SignUp";
 import Navbar from "./components/Navbar/Navbar";
 import ProtectedRoute from "./utils/ProtectedRoute";
-import { AppContextProvider, UserContext } from "./Context/AppContext";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loadUser } from "./slices/authSlice";
 
 //Header Component for Navbar
 const HeaderLayout = () => (
@@ -24,42 +25,45 @@ const HeaderLayout = () => (
   </>
 );
 
-//These are all the routes
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route element={<HeaderLayout />}>
-      {/* These are Protected Routes */}
-      <Route element={<ProtectedRoute />}>
-        <Route path="/" element={<Home pageTitle="NoteTake" />} />
-      </Route>
-
-      <Route path="/login" element={<Login pageTitle="NoteTake - Login" />} />
-      <Route
-        path="/signup"
-        element={<Signup pageTitle="NoteTake - Signup" />}
-      />
-      <Route path="*" element={<Navigate to="/" />} />
-    </Route>
-  )
-);
-
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userDetails, setUserDetails] = useState({});
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadUser());
+  }, [dispatch]);
+
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  //These are all the routes
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route element={<HeaderLayout />}>
+        {/* These are Protected Routes */}
+        <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
+          <Route path="/" element={<Home pageTitle="NoteTake" />} />
+        </Route>
+
+        <Route
+          element={
+            <ProtectedRoute isAuthenticated={!isAuthenticated} redirect="/" />
+          }
+        >
+          <Route
+            path="/login"
+            element={<Login pageTitle="NoteTake - Login" />}
+          />
+          <Route
+            path="/signup"
+            element={<Signup pageTitle="NoteTake - Signup" />}
+          />
+        </Route>
+        <Route path="*" element={<Navigate to="/" />} />
+      </Route>
+    )
+  );
+
   return (
     <>
-      {/* <AppContextProvider> */}
-      {/* <UserContext.Provider
-          value={{
-            isAuthenticated,
-            setIsAuthenticated,
-            userDetails,
-            setUserDetails,
-          }}
-        > */}
       <RouterProvider router={router} />
-      {/* </UserContext.Provider> */}
-      {/* </AppContextProvider> */}
     </>
   );
 }
