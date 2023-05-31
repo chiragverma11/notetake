@@ -3,6 +3,7 @@ import catchAsyncError from "../middlewares/catchAsyncError.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import User from "../models/userModel.js";
 import sendCookie from "../utils/sendCookie.js";
+import sendEmail from "../utils/sendemail.js";
 
 //SignUp Controller
 const signupUser = catchAsyncError(async (req, res, next) => {
@@ -87,4 +88,43 @@ const loadUser = catchAsyncError(async (req, res, next) => {
   });
 });
 
-export { signupUser, loginUser, logoutUser, loadUser };
+const forgotPassword = catchAsyncError(async (req, res, next) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email: email });
+  if (!user) return next(new ErrorHandler("User doesn't exist", 401));
+
+  //Generating Reset Password Token
+  const resetToken = await user.getResetPasswordToken();
+
+  //Saving Token to Database
+  await user.save();
+
+  //Reset Password Url
+  const resetPasswordUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/reset-password/${resetToken}`;
+
+  const mailDetails = {
+    to: user.email,
+    subject: "NoteTake - Password Reset",
+    text: `Hi, ${user.name} \nPlease click below to reset your password for NoteTake. If you did not request a new password, please ignore this email.\n
+    ${resetPasswordUrl}`,
+    html: `<h4>Hi, ${user.name}</h4>
+    <p>Please click below to reset your password for NoteTake. If you did not request a new password, please ignore this email.</p>
+    ${resetPasswordUrl}`,
+  };
+  sendEmail(mailDetails);
+  res.status(200).json({
+    success: true,
+    message: "Forgot Password Email Sent",
+  });
+});
+
+export {
+  signupUser,
+  loginUser,
+  logoutUser,
+  loadUser,
+  forgotPassword,
+  // resetPassword,
+};
