@@ -1,4 +1,5 @@
 import validator from "validator";
+import crypto from "crypto";
 import catchAsyncError from "../middlewares/catchAsyncError.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import User from "../models/userModel.js";
@@ -29,7 +30,7 @@ const signupUser = catchAsyncError(async (req, res, next) => {
 
   const user = await User.findOne({ email });
   if (user) {
-    return next(new ErrorHandler("Email Already Exists", 401));
+    return next(new ErrorHandler("Email Already Exists", 403));
   }
   const newUser = await User.create({
     name,
@@ -120,11 +121,49 @@ const forgotPassword = catchAsyncError(async (req, res, next) => {
   });
 });
 
+const resetPassword = catchAsyncError(async (req, res, next) => {
+  const { password, confirmPassword } = req.body;
+
+  //Hashing Token received in Params
+  const resetToken = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+
+  //Finding Hashed resetToken the User Database with Expiry time left
+  const user = await User.findOne({
+    resetPasswordToken: resetToken,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(
+      new ErrorHandler(
+        "Reset Password Token is invalid or has been expired",
+        400
+      )
+    );
+  }
+
+  if (password !== confirmPassword) {
+    return next(
+      new ErrorHandler("Password and Confirm Password are not same", 406)
+    );
+  }
+
+  user.password = password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+
+  //Saving Token to Database
+  await user.save();
+});
+
 export {
   signupUser,
   loginUser,
   logoutUser,
   loadUser,
   forgotPassword,
-  // resetPassword,
+  resetPassword,
 };

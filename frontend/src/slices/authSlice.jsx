@@ -1,15 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import authService from "../services/authService";
+import toast from "react-hot-toast";
+
+var loadingtoast = null;
 
 export const login = createAsyncThunk("login", async (credentials) => {
   const response = await authService.login(credentials);
   return response.data;
 });
 
-export const signup = createAsyncThunk("signup", async (credentials) => {
-  const response = await authService.signup(credentials);
-  return response.data;
-});
+export const signup = createAsyncThunk(
+  "signup",
+  async (credentials, { rejectWithValue }) => {
+    const response = await authService.signup(credentials);
+    return response.data;
+  }
+);
 
 export const logout = createAsyncThunk("logout", async () => {
   const response = await authService.logout();
@@ -49,15 +55,23 @@ const authSlice = createSlice({
         state.error = action.error.message;
       }) //Signup Case
       .addCase(signup.pending, (state) => {
+        loadingtoast = toast.loading("Signing Up...", {
+          id: loadingtoast,
+        });
         state.isLoading = true;
         state.error = null;
       })
       .addCase(signup.fulfilled, (state, action) => {
+        toast.success("SignUp Successfully", {
+          id: loadingtoast,
+        });
         state.isLoading = false;
-        // state.isAuthenticated = false;
-        // state.userDetails = null;
+        state.error = null;
       })
       .addCase(signup.rejected, (state, action) => {
+        toast.error("Email Already Exist", {
+          id: loadingtoast,
+        });
         state.isLoading = false;
         state.error = action.error.message;
       }) //Logout Case

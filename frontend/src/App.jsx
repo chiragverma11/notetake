@@ -44,7 +44,11 @@ function App() {
 
         <Route
           element={
-            <ProtectedRoute isAuthenticated={!isAuthenticated} redirect="/" />
+            <ProtectedRoute
+              isAuthenticated={!isAuthenticated}
+              redirect="/"
+              noLoading={true}
+            />
           }
         >
           <Route

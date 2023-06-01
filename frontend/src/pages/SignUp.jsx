@@ -1,51 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 import "../styles/signup.scss";
 import { signup } from "../slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-
-async function signupUser(formData) {
-  try {
-    const response = await axios({
-      method: "post",
-      url: `/api/signup`,
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: formData,
-    });
-    return response.data;
-  } catch (error) {
-    if (!error.response.data.success) {
-      toast.error(error.response.data.message, {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-    }
-  }
-}
 
 //Main Function
 const SignUp = ({ pageTitle }) => {
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.auth.isLoading);
-
-  //Changing Page Title as the page Loads
-  useEffect(() => {
-    document.title = pageTitle;
-  }, []);
-
-  const navigate = useNavigate();
+  const error = useSelector((state) => state.auth.error);
+  const message = useSelector((state) => state.auth.message);
 
   //Use States for Input Form
   const [user, setUser] = useState({
@@ -53,6 +18,13 @@ const SignUp = ({ pageTitle }) => {
     email: "",
     password: "",
   });
+
+  //Changing Page Title as the page Loads
+  useEffect(() => {
+    document.title = pageTitle;
+  }, []);
+
+  const navigate = useNavigate();
 
   //HandleChange for changing input value
   function handleDataChange(e) {
@@ -64,16 +36,6 @@ const SignUp = ({ pageTitle }) => {
     e.preventDefault();
 
     if (user.password < 3) {
-      toast.warn("Password length must be atleast 3 characters!", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
     }
 
     const formData = {
@@ -82,43 +44,22 @@ const SignUp = ({ pageTitle }) => {
       password: user.password,
     };
 
-    console.log(dispatch(signup()));
-    const response = await signupUser(formData);
+    const result = dispatch(signup(formData));
+    console.log(result);
     //If response is success or there is no error
-    if (response && response.success) {
-      toast.success("Sign Up Successfully", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
+    if (result) {
+      console.log("redirect");
       setUser({ name: "", email: "", password: "" });
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
+      // setTimeout(() => {
+      //   navigate("/login");
+      // }, 2000);
     }
   }
 
   return (
     <>
       <div className="signup">
-        <ToastContainer
-          position="top-right"
-          autoClose={1000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-          className="toast"
-        />
+        <Toaster />
         <h2 className="signup_title">Sign Up</h2>
         <form onSubmit={handleSignup} className="signup_form">
           <input
@@ -129,6 +70,7 @@ const SignUp = ({ pageTitle }) => {
             value={user.name}
             onChange={handleDataChange}
             className="signup_form_input"
+            autoComplete="on"
           />
           <input
             type="text"
@@ -138,6 +80,7 @@ const SignUp = ({ pageTitle }) => {
             value={user.email}
             onChange={handleDataChange}
             className="signup_form_input"
+            autoComplete="on"
           />
           <input
             type="password"
@@ -147,6 +90,7 @@ const SignUp = ({ pageTitle }) => {
             value={user.password}
             onChange={handleDataChange}
             className="signup_form_input"
+            autoComplete="on"
           />
           <button type="submit" name="Sign up" className="signupBtn">
             Sign up
