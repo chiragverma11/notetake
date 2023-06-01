@@ -58,7 +58,7 @@ const loginUser = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("User doesn't exist", 401));
   }
 
-  const isMatch = user.comparePassword(user.password);
+  const isMatch = await user.comparePassword(password);
   if (!isMatch) {
     return next(new ErrorHandler("Incorrect Password", 401));
   }
@@ -157,6 +157,7 @@ const resetPassword = catchAsyncError(async (req, res, next) => {
 
   //Saving Token to Database
   await user.save();
+  sendCookie(user, 200, res);
 });
 
 export {
