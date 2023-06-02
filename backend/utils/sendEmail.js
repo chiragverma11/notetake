@@ -1,4 +1,7 @@
 import nodemailer from "nodemailer";
+
+//OAuth2 Method
+
 // import { google } from "googleapis";
 // import dotenv from "dotenv";
 // dotenv.config({ path: "backend/config/.env" });
@@ -37,7 +40,9 @@ import nodemailer from "nodemailer";
 //   return result;
 // };
 
-// ----------------------------------------
+// -------------------------------------------------
+
+//Simple SMTP Method Using Gmail
 
 const sendEmail = async (mailDetails) => {
   const transporter = nodemailer.createTransport({
@@ -55,8 +60,13 @@ const sendEmail = async (mailDetails) => {
     text: mailDetails.text,
     html: mailDetails.html,
   };
-  const result = await transporter.sendMail(mailoptions);
-  return result;
+
+  try {
+    const result = await transporter.sendMail(mailoptions);
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export default sendEmail;
