@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import "../styles/signup.scss";
 import { signup } from "../slices/authSlice";
@@ -35,25 +35,18 @@ const SignUp = ({ pageTitle }) => {
   async function handleSignup(e) {
     e.preventDefault();
 
-    if (user.password < 3) {
-    }
-
     const formData = {
       name: user.name,
       email: user.email,
       password: user.password,
     };
 
-    const result = dispatch(signup(formData));
-    console.log(result);
-    //If response is success or there is no error
-    if (result) {
-      console.log("redirect");
+    try {
+      await dispatch(signup(formData)).unwrap();
       setUser({ name: "", email: "", password: "" });
-      // setTimeout(() => {
-      //   navigate("/login");
-      // }, 2000);
-    }
+      // navigate("/login");
+    } catch (error) {}
+    navigate("/login");
   }
 
   return (
@@ -95,6 +88,12 @@ const SignUp = ({ pageTitle }) => {
           <button type="submit" name="Sign up" className="signupBtn">
             Sign up
           </button>
+          <span className="login_span">
+            Already have an account?{" "}
+            <NavLink to="/login" className="loginBtn">
+              Login
+            </NavLink>
+          </span>
         </form>
       </div>
     </>

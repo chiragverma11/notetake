@@ -10,6 +10,8 @@ import {
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/SignUp";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Navbar from "./components/Navbar/Navbar";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import { useDispatch, useSelector } from "react-redux";
@@ -59,7 +61,15 @@ function App() {
             path="/signup"
             element={<Signup pageTitle="NoteTake - Signup" />}
           />
+          <Route
+            path="/forgot-password"
+            element={<ForgotPassword pageTitle="NoteTake - Forgot Password" />}
+          />
         </Route>
+        <Route
+          path="/reset-password/:token"
+          element={<ResetPassword pageTitle="NoteTake - Reset Password" />}
+        />
         <Route path="*" element={<Navigate to="/" />} />
       </Route>
     )

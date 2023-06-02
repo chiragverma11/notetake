@@ -79,4 +79,16 @@ body[data-theme="dark"] {
       background-color: var(--primary-active);
     }
   }
+
+  .login_span {
+    color: var(--placeholder);
+    font-weight: 500;
+    margin-block: 1.25rem 0;
+    text-align: center;
+
+    .loginBtn {
+      color: var(--text);
+      font-weight: 700;
+    }
+  }
 }
