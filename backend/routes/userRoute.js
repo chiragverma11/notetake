@@ -36,6 +36,6 @@ router.route("/logout").post(logoutUser);
 router.route("/forgot-password").post(forgotPassword);
 
 //Reset Password Route
-router.route("/reset-password/:token").post(resetPassword);
+router.route("/reset-password/:token").patch(resetPassword);
 
 export default router;

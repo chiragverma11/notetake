@@ -65,6 +65,7 @@ const loginUser = catchAsyncError(async (req, res, next) => {
   sendCookie(user, 200, res);
 });
 
+//Logout Controller
 const logoutUser = catchAsyncError(async (req, res, next) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
@@ -76,6 +77,7 @@ const logoutUser = catchAsyncError(async (req, res, next) => {
   });
 });
 
+//LoadUser Controller
 const loadUser = catchAsyncError(async (req, res, next) => {
   const user = await User.findOne(req.user._id);
 
@@ -89,6 +91,7 @@ const loadUser = catchAsyncError(async (req, res, next) => {
   });
 });
 
+//Forgot Password Controller
 const forgotPassword = catchAsyncError(async (req, res, next) => {
   const { email } = req.body;
   const user = await User.findOne({ email: email });
@@ -101,9 +104,9 @@ const forgotPassword = catchAsyncError(async (req, res, next) => {
   await user.save();
 
   //Reset Password Url
-  const resetPasswordUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/reset-password/${resetToken}`;
+  const resetPasswordUrl = `${req.protocol}://${req.hostname}:${process.env.FRONTEND_PORT}/reset-password/${resetToken}`;
+
+  console.log(resetPasswordUrl);
 
   const mailDetails = {
     to: user.email,
@@ -121,6 +124,7 @@ const forgotPassword = catchAsyncError(async (req, res, next) => {
   });
 });
 
+//Reset Password Controller
 const resetPassword = catchAsyncError(async (req, res, next) => {
   const { password, confirmPassword } = req.body;
 
@@ -157,7 +161,10 @@ const resetPassword = catchAsyncError(async (req, res, next) => {
 
   //Saving Token to Database
   await user.save();
-  sendCookie(user, 200, res);
+  res.status(200).json({
+    success: true,
+    message: "Password Reset Successful",
+  });
 });
 
 export {
