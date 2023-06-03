@@ -7,11 +7,19 @@ const sendCookie = (user = {}, statusCode, res) => {
     email: user.email,
   };
 
-  const options = {
-    maxAge: process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
-    // sameSite: "Lax",
-    httpOnly: true,
-  };
+  const options =
+    process.env.NODE_ENV !== "PRODUCTION"
+      ? {
+          maxAge: process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
+          // sameSite: "Lax",
+          httpOnly: true,
+        }
+      : {
+          maxAge: process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
+          sameSite: "None",
+          secure: true,
+          httpOnly: true,
+        };
   res
     .status(statusCode)
     .cookie("token", token, options)
