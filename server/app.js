@@ -8,7 +8,7 @@ import * as dotenv from "dotenv";
 const app = express();
 
 //dotenv configuration
-dotenv.config({ path: "backend/config/.env" });
+dotenv.config({ path: "config/.env" });
 
 //Cors
 app.use(

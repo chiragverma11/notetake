@@ -1,12 +1,12 @@
 {
-  "name": "notetake",
+  "name": "notetake-server",
   "version": "1.0.0",
   "type": "module",
-  "description": "This is a simple Note Taking WebApp",
+  "description": "This is a simple Note Taking WebApp - Server",
   "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "dev": "nodemon backend/server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",

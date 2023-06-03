@@ -4,7 +4,7 @@ import nodemailer from "nodemailer";
 
 // import { google } from "googleapis";
 // import dotenv from "dotenv";
-// dotenv.config({ path: "backend/config/.env" });
+// dotenv.config({ path: "config/.env" });
 
 // const OAuth2Client = new google.auth.OAuth2({
 //   clientId: process.env.CLIENT_ID,

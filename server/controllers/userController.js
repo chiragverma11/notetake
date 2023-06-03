@@ -113,7 +113,7 @@ const forgotPassword = catchAsyncError(async (req, res, next) => {
   //Reset Password Url for Mobile User (Just for developement)
   const resetPasswordUrlM = `${req.protocol}://192.168.1.6:${process.env.FRONTEND_PORT}/reset-password/${resetToken}`;
 
-  console.log(resetPasswordUrl); //Just to get Reset Url directly from Console
+  // console.log(resetPasswordUrl); //Just to get Reset Url directly from Console
 
   //Sending Forgot Password? Email
   sendForgotPasswordEmail(user, resetPasswordUrl, resetPasswordUrlM);
