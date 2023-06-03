@@ -71,10 +71,20 @@ const loginUser = catchAsyncError(async (req, res, next) => {
 
 //Logout Controller
 const logoutUser = catchAsyncError(async (req, res, next) => {
-  res.cookie("token", null, {
-    expires: new Date(Date.now()),
-    httpOnly: true,
-  });
+  //Send Cookie According to Node Env
+  process.env.NODE_ENV !== "PRODUCTION"
+    ? res.cookie("token", null, {
+        expires: new Date(Date.now()),
+        httpOnly: true,
+      })
+    : res.cookie("token", null, {
+        expires: new Date(Date.now()),
+        httpOnly: true,
+        sameSite: "None",
+        secure: true,
+        domain: "notetake-app.netlify.app",
+      });
+
   res.status(200).json({
     success: true,
     message: "Logged Out",

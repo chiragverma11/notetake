@@ -19,8 +19,10 @@ const sendCookie = (user = {}, statusCode, res) => {
           sameSite: "None",
           secure: true,
           httpOnly: true,
-          domain: "notetake-app.netlify.app",
+          domain: ".netlify.app",
         };
+
+  //Sending Cookie and Response with status and json
   res
     .status(statusCode)
     .cookie("token", token, options)
