@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useNavigate, NavLink } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 import "../styles/login.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../slices/authSlice";
-import spinner from "../assets/spinner.svg";
 
 const Login = ({ pageTitle }) => {
   const dispatch = useDispatch();
@@ -39,25 +37,14 @@ const Login = ({ pageTitle }) => {
     };
 
     dispatch(login(formData));
+
     navigate("/");
   }
 
   return (
     <>
       <div className="login">
-        <ToastContainer
-          position="top-right"
-          autoClose={1000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-          className="toast"
-        />
+        <Toaster />
         <h2 className="login_title">Login</h2>
         <form onSubmit={handlelogin} className="login_form">
           <input
@@ -78,10 +65,20 @@ const Login = ({ pageTitle }) => {
             onChange={handleDataChange}
             className="login_form_input"
           />
+          <NavLink to="/forgot-password" className="forgotPasswordBtn">
+            Forgot password?
+          </NavLink>
           <button type="submit" name="login" className="loginBtn">
             {/* {isLoading ? "Logging..." : "Login"} */}
             Login
           </button>
+
+          <span className="signup_span">
+            Don't have an account?{" "}
+            <NavLink to="/signup" className="signupBtn">
+              Sign up
+            </NavLink>
+          </span>
         </form>
       </div>
     </>
