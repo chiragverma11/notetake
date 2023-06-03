@@ -12,6 +12,8 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   dotenv.config({ path: "config/.env" });
 }
 
+//Allowed Origins separated with string to Array
+const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS?.split(",");
 //Cors
 process.env.NODE_ENV !== "PRODUCTION"
   ? app.use(
@@ -27,7 +29,7 @@ process.env.NODE_ENV !== "PRODUCTION"
   : app.use(
       cors({
         credentials: true,
-        origin: [process.env.ALLOWED_ORIGIN],
+        origin: ALLOWED_ORIGINS,
       })
     );
 
@@ -51,7 +53,7 @@ app.use("/api", note);
 const router = express.Router();
 
 //Just to show message when direct api is visited
-router.route("/").get(() => {
+router.get("/", (req, res) => {
   res.send("Server is Running");
 });
 
