@@ -38,6 +38,14 @@ import note from "./routes/noteRoute.js";
 app.use("/api", user);
 app.use("/api", note);
 
+//Router from express router
+const router = express.Router();
+
+//Just to show message when direct api is visited
+router.route("/").get(() => {
+  res.send("Server is Running");
+});
+
 //Error Middleware For Error Handling
 app.use(errorMiddleware);
 
