@@ -8,19 +8,28 @@ import * as dotenv from "dotenv";
 const app = express();
 
 //dotenv configuration
-dotenv.config({ path: "config/.env" });
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  dotenv.config({ path: "config/.env" });
+}
 
 //Cors
-app.use(
-  cors({
-    credentials: true,
-    origin: [
-      "http://localhost:5173",
-      "http://127.0.0.1:5173",
-      "http://192.168.1.6:5173",
-    ],
-  })
-);
+process.env.NODE_ENV !== "PRODUCTION"
+  ? app.use(
+      cors({
+        credentials: true,
+        origin: [
+          "http://localhost:5173",
+          "http://127.0.0.1:5173",
+          "http://192.168.1.6:5173",
+        ],
+      })
+    )
+  : app.use(
+      cors({
+        credentials: true,
+        origin: [process.env.ALLOWED_ORIGIN],
+      })
+    );
 
 app.use(morgan("tiny"));
 

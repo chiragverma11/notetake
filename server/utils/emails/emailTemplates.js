@@ -3,7 +3,7 @@ import sendEmail from "../sendEmail.js";
 export const sendForgotPasswordEmail = (
   user,
   resetPasswordUrl,
-  resetPasswordUrlM
+  resetPasswordUrlM = resetPasswordUrl
 ) => {
   //Mail Options
   const mailDetails = {

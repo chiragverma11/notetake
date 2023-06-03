@@ -5,6 +5,9 @@ connectDatabase();
 
 //Server Listening
 const PORT = process.env.PORT || 8080;
+
 app.listen(PORT, () => {
-  console.log(`Server is Running on http://localhost:${PORT}`);
+  process.env.NODE_ENV !== "PRODUCTION"
+    ? console.log(`Server is Running on http://localhost:${PORT}`)
+    : console.log(`Server is Running`);
 });

@@ -108,15 +108,23 @@ const forgotPassword = catchAsyncError(async (req, res, next) => {
   await user.save();
 
   //Reset Password Url
-  const resetPasswordUrl = `${req.protocol}://${req.hostname}:${process.env.FRONTEND_PORT}/reset-password/${resetToken}`;
+  const resetPasswordUrl =
+    process.env.NODE_ENV !== "PRODUCTION"
+      ? `${req.protocol}://${req.hostname}:${process.env.FRONTEND_PORT}/reset-password/${resetToken}`
+      : `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
   //Reset Password Url for Mobile User (Just for developement)
-  const resetPasswordUrlM = `${req.protocol}://192.168.1.6:${process.env.FRONTEND_PORT}/reset-password/${resetToken}`;
+  const resetPasswordUrlM =
+    process.env.NODE_ENV !== "PRODUCTION"
+      ? `${req.protocol}://192.168.1.6:${process.env.FRONTEND_PORT}/reset-password/${resetToken}`
+      : null;
 
   // console.log(resetPasswordUrl); //Just to get Reset Url directly from Console
 
   //Sending Forgot Password? Email
-  sendForgotPasswordEmail(user, resetPasswordUrl, resetPasswordUrlM);
+  process.env.NODE_ENV !== "PRODUCTION"
+    ? sendForgotPasswordEmail(user, resetPasswordUrl, resetPasswordUrlM)
+    : sendForgotPasswordEmail(user, resetPasswordUrl);
 
   res.status(200).json({
     success: true,
