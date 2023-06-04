@@ -82,7 +82,7 @@ const logoutUser = catchAsyncError(async (req, res, next) => {
         httpOnly: true,
         sameSite: "None",
         secure: true,
-        domain: "notetake-app.netlify.app",
+        // domain: ".netlify.app",
       });
 
   res.status(200).json({

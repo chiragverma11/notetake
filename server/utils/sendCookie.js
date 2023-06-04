@@ -19,7 +19,7 @@ const sendCookie = (user = {}, statusCode, res) => {
           sameSite: "None",
           secure: true,
           httpOnly: true,
-          domain: ".netlify.app",
+          // domain: ".netlify.app",
         };
 
   //Sending Cookie and Response with status and json
