@@ -141,7 +141,7 @@ const Home = ({ pageTitle }) => {
         <div className="notes_wrapper">
           {isLoading ? (
             <p className="loading">Loading...</p>
-          ) : notess.length === 0 ? (
+          ) : notess?.length === 0 ? (
             <p className="alt_notes">Notes you add appear here</p>
           ) : (
             <>
@@ -151,7 +151,7 @@ const Home = ({ pageTitle }) => {
                 className="masonry_layout"
               >
                 {notess
-                  .slice()
+                  ?.slice()
                   .reverse()
                   .map((note, index) => {
                     return (
